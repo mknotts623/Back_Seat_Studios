@@ -8,13 +8,13 @@ import java.util.ArrayList;
  */
 public class DeckBuilder
 {
-    ArrayList<CardTutorial> deck;
+    Stack<CardTutorial> deck;
 
     public DeckBuilder(CardTutorial[] d) {
-        deck = new ArrayList<CardTutorial>();
+        deck = new Stack<CardTutorial>();
         
         for(int i = 0; i<40; i++) {
-            deck.add(d[i]);
+            deck.push(d[i]);
         }
     }
 }
