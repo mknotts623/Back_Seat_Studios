@@ -10,12 +10,14 @@ import javafx.scene.image.ImageView;
 public class CardTutorial
 {
     private String cardName;
+    private int indexNumber;
     private int attack;
     private int defense;
     private ImageView cardImage;
     
-    public CardTutorial(String cardName, int attack, int defense, ImageView cardImage) {
+    public CardTutorial(String cardName, int indexNumber, int attack, int defense, ImageView cardImage) {
         this.cardName = cardName;
+        this.indexNumber = indexNumber;
         this.attack = attack;
         this.defense = defense;
         this.cardImage = cardImage;
