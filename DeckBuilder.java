@@ -17,4 +17,8 @@ public class DeckBuilder
             deck.push(d[i]);
         }
     }
+    
+    public CardTutorial drawCard() {
+        return deck.pop();
+    }
 }
