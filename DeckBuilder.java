@@ -3,8 +3,7 @@ import java.util.ArrayList;
 /**
  * Takes array of cards, places 40 of them in an arraylist
  * 
- * @Christina Kim 
- * @9/27/17
+ * @author Christina Kim 
  */
 public class DeckBuilder
 {
