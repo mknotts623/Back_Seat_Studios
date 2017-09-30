@@ -4,8 +4,8 @@ import javafx.scene.image.ImageView;
 /**
  * Basic card, with name, index number, attack, defense, card art
  * 
- * @Christina Kim
- * @9/30/17
+ * @author Christina Kim
+ * @version 9/30/17
  */
 public class Card
 {

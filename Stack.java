@@ -2,8 +2,8 @@
 /**
  * Generic stack class, uses a singly linked list
  * 
- * @Christina Kim 
- * @9/25/17
+ * @author Christina Kim 
+ * @version 9/25/17
  */
 public class Stack <T>
 {

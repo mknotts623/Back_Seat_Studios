@@ -2,8 +2,8 @@ import java.util.ArrayList;
 /**
  * Add and remove cards from hand (an ArrayList of Cards)
  * 
- * @Christina Kim
- * @9/30/17
+ * @author Christina Kim
+ * @version 9/30/17
  */
 public class HandCards
 {
