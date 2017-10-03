@@ -10,7 +10,11 @@ public class ClickTest extends JPanel {
 
       addMouseListener(new MouseAdapter() { 
           public void mousePressed(MouseEvent me) { 
-            System.out.println(me); 
+            //System.out.println(me);
+            if (me.getButton() == MouseEvent.BUTTON1) { //button 1 was clicked
+                System.out.println("x coordinate: " + me.getX());
+                System.out.println("y coordinate: " + me.getY());
+            }
           } 
         }); 
 
@@ -22,7 +26,7 @@ public class ClickTest extends JPanel {
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    frame.setSize(200, 200);
+    frame.setSize(500, 500);
     frame.setVisible(true);
   }
 }
