@@ -1,11 +1,12 @@
 //made following: https://www.youtube.com/watch?v=qL9MrneLiNU
 
-import javafx.scene.image.ImageView;
+import javax.swing.*;
+import java.awt.*;
 /**
  * Basic card, with name, index number, attack, defense, card art
  * 
  * @author Christina Kim
- * @version 9/30/17
+ * @version 10/3/17
  */
 public class Card
 {
@@ -13,7 +14,7 @@ public class Card
     private int index;
     private int attack;
     private int defense;
-    private ImageView cardImage;
+    private String cardImage;
     
     /**
      * Constructor for objects of class Card
@@ -21,16 +22,14 @@ public class Card
      * @param index Card's index number, used to organize and identify cards
      * @param attack Attack stat of card, compared to other cards' defense when challenging
      * @param defense Defense stat of card, compared to other cards' attack when withstanding challenges
-     * @param CardImage Card art, what the player sees
+     * @param cardImage Name of the image file for the card art
      */
-    public Card(String cardName, int index, int attack, int defense, ImageView cardImage) {
+    public Card(String cardName, int index, int attack, int defense, String cardImage) {
         this.cardName = cardName;
         this.index = index;
         this.attack = attack;
         this.defense = defense;
         this.cardImage = cardImage;
-        this.cardImage.setFitHeight(240);
-        this.cardImage.setFitWidth(148);
     }
     
     /**
@@ -59,9 +58,9 @@ public class Card
     
     /**
      * Getter for cardImage
-     * @return Art used for card
+     * @return File name for art used for card
      */
-    public ImageView getCardImage() {
+    public String getCardImage() {
         return this.cardImage;
     }
     
