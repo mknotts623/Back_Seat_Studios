@@ -20,26 +20,27 @@ public class SampleBoard extends JPanel {
         g.fillRect(width/100, 46*height/100, 97*width/100, 24*height/100); //Player's hand.
         g.fillRect(width/100, 71*height/100, 97*width/100, 19*height/100); //Player's field.
         
-        int cardWidth = width/14;
-        int cardHeight = height/6;
+        int cardScale = 4650; //This can let us easily tweak the cards' size.
+        int cardWidth = height*450/cardScale; //By making both in terms of screen height, the cards will always have the right proportions, and if we leave a considerable border to the right, they should all fit on screen.
+        int cardHeight = height*650/cardScale;
         
         g.setColor(Color.lightGray); //ALT COLOR darkGray
         //Represents the card's back.
-        for (int i = 0; i < 5; i++) { //Put 5 placeholder cards in opponent's hand.
+        for (int i = 0; i < 10; i++) { //Put 5 placeholder cards in opponent's hand.
             g.fillRect((2+i)*width/100 + i*cardWidth, 2*height/100, cardWidth, cardHeight); //Each is a small gap away from the next.
         }
         
         g.setColor(Color.white); //ALT COLOR lightGray
         //Represents the card's front.
-        for (int i = 0; i < 2; i++) { //Put 2 placeholder cards in opponent's field.
+        for (int i = 0; i < 10; i++) { //Put 2 placeholder cards in opponent's field.
             g.fillRect((2+i)*width/100 + i*cardWidth, 25*height/100, cardWidth, cardHeight); //Making these left aligned is way easier than center aligned.
         }
 
-        for (int i = 0; i < 7; i++) { //Put 7 placeholder cards in player's field.  Wow, you're having a good game.
+        for (int i = 0; i < 10; i++) { //Put 7 placeholder cards in player's field.  Wow, you're having a good game.
             g.fillRect((2+i)*width/100 + i*cardWidth, 50*height/100, cardWidth, cardHeight); //When this isn't a placeholder, we'l probably need to make each card some sort of draggable thing.
         }
         
-        for (int i = 0; i < 4; i++) { //Put 4 placeholder cards in player's hand.
+        for (int i = 0; i < 10; i++) { //Put 4 placeholder cards in player's hand.
             g.fillRect((2+i)*width/100 + i*cardWidth, 72*height/100, cardWidth, cardHeight); //In case you haven't noticed, in the condition i < x, x is the number of cards to print. The cards are printed at a height equal to 1% of screen height greater (lower down) than the hand they're in, or 4% more than the field they're on.
         }
         

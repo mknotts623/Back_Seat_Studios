@@ -1,8 +1,8 @@
 //By Josh Fickes
 public class Slot //To be used in a 2D array in the main program.
 {
-    String location;
-    int player;
+    String location; //"hand" or "field"
+    int player; //1 or 2
     Card whatCard = null;
         
     Slot(String whereItAt, int whoOwnsIt, Card whatCardIsInIt) {
