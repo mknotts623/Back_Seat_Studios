@@ -12,7 +12,7 @@ public class ClickableGame extends JPanel {
 
   
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         /** NEW STUFF BEGIN **/
         int turn = 1; //1 or 2, corresponding to player whose turn it is.
         CardDatabase possibleCards = new CardDatabase();
@@ -89,8 +89,6 @@ public class ClickableGame extends JPanel {
                     }
                     /** NEW STUFF BEGIN **/ 
                 } else if (me.getButton() == MouseEvent.BUTTON2) {
-                    int xPos = me.getX();
-                    int yPos = me.getY();
                     drawCard(slotGrid, turn, p1Deck, p2Deck);
                     /** NEW STUFF END **/
                 }
@@ -109,7 +107,7 @@ public class ClickableGame extends JPanel {
     
     }
     
-    public void clickSelect(Slot[][] slotGrid, int row, int column, JFrame frame) { //Accesses slot grid at [row][column], and decides what to do with the card based on its position.
+    public static void clickSelect(Slot[][] slotGrid, int row, int column, JFrame frame) { //Accesses slot grid at [row][column], and decides what to do with the card based on its position.
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)screenSize.getWidth();
         int height = (int)screenSize.getHeight();
@@ -155,7 +153,7 @@ public class ClickableGame extends JPanel {
         
     }
     
-    public int firstSpace(Slot[][] slotGrid, int row) { //Returns the column number of the first open position in the selected row.
+    public static int firstSpace(Slot[][] slotGrid, int row) { //Returns the column number of the first open position in the selected row.
         int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too.
         boolean found = false;
         int whereIsGap = cardsPerRow + 1;
@@ -168,7 +166,7 @@ public class ClickableGame extends JPanel {
         return whereIsGap;
     }
     
-    public void buildSlotGrid(Slot[][] slotGrid) {
+    public static void buildSlotGrid(Slot[][] slotGrid) {
         int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too. 
         for (int i = 0; i < cardsPerRow; i++) {
             slotGrid[0][i] = new Slot("hand", 2, null);
@@ -185,7 +183,7 @@ public class ClickableGame extends JPanel {
     }
     
     /** NEW STUFF BEGIN **/
-    public void drawCard(Slot[][] slotGrid, int turn, DeckBuilder p1Deck, DeckBuilder p2Deck) {
+    public static void drawCard(Slot[][] slotGrid, int turn, DeckBuilder p1Deck, DeckBuilder p2Deck) {
         int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too.
         Card newCard;
         if (turn == 1) {
