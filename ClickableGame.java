@@ -12,7 +12,13 @@ public class ClickableGame extends JPanel {
 
   
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
+        /** NEW STUFF BEGIN **/
+        int turn = 1; //1 or 2, corresponding to player whose turn it is.
+        CardDatabase possibleCards = new CardDatabase();
+        DeckBuilder p1Deck = new DeckBuilder(possibleCards.database);
+        DeckBuilder p2Deck = new DeckBuilder(possibleCards.database);
+        /** NEW STUFF END **/
         //THESE HAVE TO MATCH THE VALUES IN SampleBoard.java!!!//
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)screenSize.getWidth(); //Figure out the player's computer screen size.
@@ -49,7 +55,7 @@ public class ClickableGame extends JPanel {
                     if (!found) {
                         for (int i = 0; i < cardsPerRow; i++) { //Check slots in p2's hand.  These loops are from the SampleBoard.java file.  If we change that, change these.
                             if (xPos > ((2+i)*width/100 + i*cardWidth) && xPos < ((2+i)*width/100 + (i+1)*cardWidth) && yPos > (2*height/100) && yPos < ((2*height/100) + cardHeight)) {
-                                clickSelect(slotGrid, 0, i);
+                                clickSelect(slotGrid, 0, i, frame);
                                 found = true;
                             }
                         }
@@ -57,7 +63,7 @@ public class ClickableGame extends JPanel {
                     if (!found) {
                         for (int i = 0; i < cardsPerRow; i++) { //Check slots in p2's field.  All that's different is the conditions for the yPos.
                             if (xPos > ((2+i)*width/100 + i*cardWidth) && xPos < ((2+i)*width/100 + (i+1)*cardWidth) && yPos > (25*height/100) && yPos < ((25*height/100) + cardHeight)) {
-                                clickSelect(slotGrid, 1, i);
+                                clickSelect(slotGrid, 1, i, frame);
                                 found = true;
                             }
                         }
@@ -65,7 +71,7 @@ public class ClickableGame extends JPanel {
                     if (!found) {
                         for (int i = 0; i < cardsPerRow; i++) { //Check slots in p1's field.
                             if (xPos > ((2+i)*width/100 + i*cardWidth) && xPos < ((2+i)*width/100 + (i+1)*cardWidth) && yPos > (50*height/100) && yPos < ((50*height/100) + cardHeight)) {
-                                clickSelect(slotGrid, 2, i);
+                                clickSelect(slotGrid, 2, i, frame);
                                 found = true;
                             }
                         }
@@ -73,7 +79,7 @@ public class ClickableGame extends JPanel {
                     if (!found) {
                         for (int i = 0; i < cardsPerRow; i++) { //Check slots in p1's hand.
                             if (xPos > ((2+i)*width/100 + i*cardWidth) && xPos < ((2+i)*width/100 + (i+1)*cardWidth) && yPos > (72*height/100) && yPos < ((72*height/100) + cardHeight)) {
-                                clickSelect(slotGrid, 3, i);
+                                clickSelect(slotGrid, 3, i, frame);
                                 found = true;
                             }
                         }
@@ -81,6 +87,12 @@ public class ClickableGame extends JPanel {
                     if (!found) {
                         System.out.println("No card clicked.");
                     }
+                    /** NEW STUFF BEGIN **/ 
+                } else if (me.getButton() == MouseEvent.BUTTON2) {
+                    int xPos = me.getX();
+                    int yPos = me.getY();
+                    drawCard(slotGrid, turn, p1Deck, p2Deck);
+                    /** NEW STUFF END **/
                 }
             } 
         });
@@ -97,7 +109,16 @@ public class ClickableGame extends JPanel {
     
     }
     
-    public static void clickSelect(Slot[][] slotGrid, int row, int column) { //Accesses slot grid at [row][column], and decides what to do with the card based on its position.
+    public void clickSelect(Slot[][] slotGrid, int row, int column, JFrame frame) { //Accesses slot grid at [row][column], and decides what to do with the card based on its position.
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        
+        int cardScale = 4650;
+        int cardWidth = height*450/cardScale;
+        int cardHeight = height*650/cardScale;
+        
+        
         System.out.println("Card clicked at x=" + column + " y=" + row);//For testing!!!!!!!!!!!!!!!!!!!!!
         System.out.println("1");
         
@@ -107,11 +128,13 @@ public class ClickableGame extends JPanel {
                 System.out.println("3");
                 if (row == 3) { //Player 1's hand.  Check player 1's field for space.
                     System.out.println("4");
+                    //Move card from hand to field.
                     int newLocation = firstSpace(slotGrid, 2);
                     slotGrid[2][newLocation].setCard(slotGrid[row][column].getCard());
                     slotGrid[row][column].setCard(null);
                 } else if (row == 0) { //Player 2's hand.  Check player 2's field for space.
                     System.out.println("5");
+                    //Move card from hand to field.
                     int newLocation = firstSpace(slotGrid, 1);
                     slotGrid[1][newLocation].setCard(slotGrid[row][column].getCard());
                     slotGrid[row][column].setCard(null);
@@ -132,7 +155,7 @@ public class ClickableGame extends JPanel {
         
     }
     
-    public static int firstSpace(Slot[][] slotGrid, int row) { //Returns the column number of the first open position in the selected row.
+    public int firstSpace(Slot[][] slotGrid, int row) { //Returns the column number of the first open position in the selected row.
         int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too.
         boolean found = false;
         int whereIsGap = cardsPerRow + 1;
@@ -145,7 +168,7 @@ public class ClickableGame extends JPanel {
         return whereIsGap;
     }
     
-    public static void buildSlotGrid(Slot[][] slotGrid) {
+    public void buildSlotGrid(Slot[][] slotGrid) {
         int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too. 
         for (int i = 0; i < cardsPerRow; i++) {
             slotGrid[0][i] = new Slot("hand", 2, null);
@@ -160,4 +183,26 @@ public class ClickableGame extends JPanel {
             slotGrid[3][i] = new Slot("hand", 1, null);
         }
     }
+    
+    /** NEW STUFF BEGIN **/
+    public void drawCard(Slot[][] slotGrid, int turn, DeckBuilder p1Deck, DeckBuilder p2Deck) {
+        int cardsPerRow = 10; //Allows for easy editing. Don't forget to change the ones in the other methods too.
+        Card newCard;
+        if (turn == 1) {
+            newCard = p1Deck.drawCard();
+            int column = firstSpace(slotGrid, 3);
+            if (column < cardsPerRow) {
+                slotGrid[3][column].setCard(newCard);
+            }
+        } else if (turn == 2) {
+            newCard = p2Deck.drawCard();
+            int column = firstSpace(slotGrid, 0);
+            if (column < cardsPerRow) {
+                slotGrid[0][column].setCard(newCard);
+            }
+        } else {
+            System.out.println("Wow, how\'d you make the turn not 1 or 2?  Might want to check out your code there."); 
+        }
+    }
+    /** NEW STUFF END **/
 }
