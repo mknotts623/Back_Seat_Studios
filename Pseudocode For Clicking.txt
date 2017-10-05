@@ -1,31 +1,55 @@
 If user clicks:
 
+
 xPos = getX();
+
 yPos = getY();
 
+
 if(0 < x < 100 and 0 < y < 100){
+
 	iWasClicked(0,0);
+
 } else if(150 < x < 250 and 0 < y < 100){
+
 	iWasClicked(0,1);
+
 } else if(0 < x < 100 and 200 < y < 300){
+
 	iWasClicked(1,0);
+
 } else if(150 < x < 250 and 200 < y < 300){
+
 	iWasClicked(1,1);
+
 } else {
+
 	Display the text "You did not click a card slot.";
+
 }
+
 
 //Slots are at predetermined locations on the screen.  Each slot has a location (field, hand), a player it belongs to (1, 2), and a Card.
 
 
+
+
 You have a 2D array of slot objects called "slots".
 
+
+
 iWasClicked(x,y){
-theSlot = slots[x][y];
-if player == you{
-if location == hand, search for first open slot in the row where the field is, pass Card to there, set card to null.
-else if location == field, store for combat
-}
+
+	Slot theSlot = slots[x][y];
+
+	if player == you{
+
+		if location == hand, search for first open slot in the row where the field is, pass Card to there, set card to null.
+
+		else if location == field, store for combat
+
+	}
+
 
 
 
@@ -35,13 +59,20 @@ else if location == field, store for combat
 
 
 //Class for ONE slot.
+
+
 class Slot(String whereItAt, int whose, Card whichOfTheCards) {
 
-String location = whereItAt;   //I'm bad at constructors, but do it however the right way is.
-int player = whose;
-Card whatCard = whichOfTheCards;
 
-getters and setters
+	String location = whereItAt;   //I'm bad at constructors, but do it however the right way is.
+
+	int player = whose;
+
+	Card whatCard = whichOfTheCards;
 
 	
+getters and setters
+
+
+
 }

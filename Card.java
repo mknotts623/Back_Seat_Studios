@@ -14,6 +14,7 @@ public class Card
     private int index;
     private int attack;
     private int defense;
+    private int cost;
     private String cardImage;
     
     /**
@@ -24,11 +25,12 @@ public class Card
      * @param defense Defense stat of card, compared to other cards' attack when withstanding challenges
      * @param cardImage Name of the image file for the card art
      */
-    public Card(String cardName, int index, int attack, int defense, String cardImage) {
+    public Card(String cardName, int index, int attack, int defense, int cost, String cardImage) {
         this.cardName = cardName;
         this.index = index;
         this.attack = attack;
         this.defense = defense;
+        this.cost = cost;
         this.cardImage = cardImage;
     }
     
@@ -80,4 +82,11 @@ public class Card
         return index;
     }
     
+    /**
+     * Getter for cost
+     * @return Cost of card in player's resources
+     */
+    public int getCost() {
+        return cost;
+    }
 }
