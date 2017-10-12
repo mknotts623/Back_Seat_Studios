@@ -1,0 +1,23 @@
+1 card = 1 mana = +2/+2
+That's the approximate basis for our balancing.
+
+(Note: something like 4/5 means 4 attack, 5 defense.)
+
+
+Basics for each cost:
+1 cost minion - 3/3, 1/5, 5/1
+2 cost minion - 5/5, 3/7, 7/3
+3 cost minion - 7/7, 5/9, 9/5, 11/3
+4 cost minion - 9/9, 7/11, 11/7, 13/5
+5 cost minion - 11/11, 9/13, 13/9, 15/7
+6 cost minion - 13/13, 11/15, 15/11, 17/9
+7 cost minion - 15/15, 13/17, 17/13, 19/11
+8 cost minion - 17/17, 15/19, 19/15, 21/13
+9 cost minion - 19/19, 21/17
+10 cost minion - 21/21
+
+Important notes:
+Feel free to shift the mid range cards two steps toward attack.
+Varry less as cost increases.  Especially, don't shift toward defense at high costs.
+That would make something impossible to defeat; for that reason, it would probably also be a bad idea to shift too far in the health direction.
+Feel free to shift by 1 stat point instead of 2, especially in attack direction.  I just thought 2 would be easier to read.
