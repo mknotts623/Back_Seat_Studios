@@ -8,9 +8,9 @@ import javax.imageio.ImageIO;
  * GOES ROWS, COLUMNS
  */
 public class buttonGame extends JFrame {
-    static int rows = 3;
+    static int rows = 4;
     static int columns = 5;
-    static Card[][] card = new Card[3][5];
+    static Card[][] card = new Card[4][5];
     static JFrame p = new JFrame();
 
     public static void main(String[] args) {
@@ -33,10 +33,10 @@ public class buttonGame extends JFrame {
                     ImageIcon img = new ImageIcon(card[i][j].getCardImage());
                     JButton b = new JButton("Button" + i + "," + j);
                     b.addActionListener(new ButtonListener());
-                    if (i == 2) {
+                    if (i == 3 || i == 0) {
                         b.setIcon(img);
                     }
-                    else if (i == 0 && j == 1) {
+                    else if (i == 1 && j == 1) {
                         b.setIcon(img);
                     }
                     p.add(b);
@@ -54,6 +54,7 @@ public class buttonGame extends JFrame {
         card[a - 1][c] = card[a][c];
         System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
     }
+
     public static void combat(int a, int c) {
         String card1 = card[a][c].toString();
         String card2 = card[a - 1][c].toString();
@@ -67,7 +68,7 @@ public class buttonGame extends JFrame {
         if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
             System.out.println(card1 + " dies");
         }
-        
+
     }
 }
 
@@ -75,15 +76,15 @@ class ButtonListener implements ActionListener {
     ButtonListener() {}
 
     public void actionPerformed(ActionEvent e) {
-        int rows = 3;
+        int rows = 4;
         int columns = 5;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (e.getActionCommand().equals("Button"  + i + "," + j)) {
-                    if (i == 2) {
+                    if (i == 3) {
                         buttonGame.moveCard(i,j);
                     }
-                    if (i == 1 && j == 1) {
+                    if (i == 2) {
                         buttonGame.combat(i,j);
                     }
                 }
