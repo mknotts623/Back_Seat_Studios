@@ -11,6 +11,7 @@ public class buttonGame extends JFrame {
     static int rows = 4;
     static int columns = 5;
     static Card[][] card = new Card[4][5];
+    static JButton[][] buttons = new JButton[4][5];
     static JFrame p = new JFrame();
 
     public static void main(String[] args) {
@@ -40,6 +41,7 @@ public class buttonGame extends JFrame {
                         b.setIcon(img);
                     }
                     p.add(b);
+                    buttons[i][j] = b;
                 }
             }
         }
