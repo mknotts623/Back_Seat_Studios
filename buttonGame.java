@@ -51,8 +51,13 @@ public class buttonGame extends JFrame {
     }    
 
     public static void moveCard(int a, int c) {
-        card[a - 1][c] = card[a][c];
-        System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
+        if (a == 3) {
+            card[a - 1][c] = card[a][c];
+            System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
+        } else if (a == 0) {
+            card[a + 1][c] = card[a][c];
+            System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + c);
+        }
     }
 
     public static void combat(int a, int c) {
@@ -81,7 +86,7 @@ class ButtonListener implements ActionListener {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (e.getActionCommand().equals("Button"  + i + "," + j)) {
-                    if (i == 3) {
+                    if (i == 3 || i == 0) {
                         buttonGame.moveCard(i,j);
                     }
                     if (i == 2) {
