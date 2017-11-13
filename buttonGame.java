@@ -1,0 +1,94 @@
+import java.awt.*;
+import java.awt.color.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.imageio.ImageIO;
+/*
+ * 
+ * GOES ROWS, COLUMNS
+ */
+public class buttonGame extends JFrame {
+    static int rows = 3;
+    static int columns = 5;
+    static Card[][] card = new Card[3][5];
+    static JFrame p = new JFrame();
+
+    public static void main(String[] args) {
+        drawBoard();
+    }
+
+    public static void drawBoard() {
+        p.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        p.setLayout(new GridLayout(rows,columns, 10, 10));
+        p.setSize(1920,1080);
+        try {
+            for (int i = 0; i < rows; i++) { 
+                for (int j = 0; j < columns; j++) {
+                    int rand = (int) (Math.random() * 3);
+                    card[i][j] = CardDatabase.CardDatabase(rand);
+                }
+            }
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {                    
+                    ImageIcon img = new ImageIcon(card[i][j].getCardImage());
+                    JButton b = new JButton("Button" + i + "," + j);
+                    b.addActionListener(new ButtonListener());
+                    if (i == 2) {
+                        b.setIcon(img);
+                    }
+                    else if (i == 0 && j == 1) {
+                        b.setIcon(img);
+                    }
+                    p.add(b);
+                }
+            }
+        }
+
+        catch (Exception e) {
+            System.out.println("ERROR:" + e);
+        }
+        p.setVisible(true);
+    }    
+
+    public static void moveCard(int a, int c) {
+        card[a - 1][c] = card[a][c];
+        System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
+    }
+    public static void combat(int a, int c) {
+        String card1 = card[a][c].toString();
+        String card2 = card[a - 1][c].toString();
+        System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+        System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
+        System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
+        System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
+        if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
+            System.out.println(card2 + " dies");
+        }
+        if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
+            System.out.println(card1 + " dies");
+        }
+        
+    }
+}
+
+class ButtonListener implements ActionListener {
+    ButtonListener() {}
+
+    public void actionPerformed(ActionEvent e) {
+        int rows = 3;
+        int columns = 5;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (e.getActionCommand().equals("Button"  + i + "," + j)) {
+                    if (i == 2) {
+                        buttonGame.moveCard(i,j);
+                    }
+                    if (i == 1 && j == 1) {
+                        buttonGame.combat(i,j);
+                    }
+                }
+            }
+        }
+    }
+}
+
