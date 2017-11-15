@@ -56,9 +56,15 @@ public class buttonGame extends JFrame {
         if (a == 3) {
             card[a - 1][c] = card[a][c];
             System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
+            buttons[a-1][c].setIcon(new ImageIcon(card[a][c].getCardImage()));
+            card[a][c] = null;
+            buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
         } else if (a == 0) {
             card[a + 1][c] = card[a][c];
             System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + c);
+            buttons[a+1][c].setIcon(new ImageIcon(card[a][c].getCardImage()));
+            card[a][c] = null;
+            buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
         }
     }
 
@@ -82,11 +88,11 @@ public class buttonGame extends JFrame {
         }
         
         //This should make combat matter.
-        if (card1dead) {
+        if (card2dead) {
             buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
             card[a-1][c] = null;
         }
-        if (card2dead) {
+        if (card1dead) {
             buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
             card[a][c] = null;
         }
