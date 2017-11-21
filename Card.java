@@ -16,6 +16,7 @@ public class Card
     private int defense;
     private int cost;
     private String cardImage;
+    private boolean alreadyAttacked;
     
     /**
      * Constructor for objects of class Card
@@ -24,6 +25,7 @@ public class Card
      * @param attack Attack stat of card, compared to other cards' defense when challenging
      * @param defense Defense stat of card, compared to other cards' attack when withstanding challenges
      * @param cardImage Name of the image file for the card art
+     * @param alreadyAttacked Whether or not this card has attacked yet.
      */
     public Card(String cardName, int index, int attack, int defense, int cost, String cardImage) {
         this.cardName = cardName;
@@ -32,6 +34,7 @@ public class Card
         this.defense = defense;
         this.cost = cost;
         this.cardImage = cardImage;
+        this.alreadyAttacked = false;
     }
     
     /**
@@ -88,5 +91,20 @@ public class Card
      */
     public int getCost() {
         return cost;
+    }
+    
+    /**
+     * Getter for alreadyAttacked
+     * @return whether or not card has attacked
+     */
+    public boolean getAlreadyAttacked() {
+        return alreadyAttacked;
+    }
+    /**
+     * Setter for alreadyAttacked
+     * 
+     */
+    public void setAlreadyAttacked(boolean state) {
+        alreadyAttacked = state;
     }
 }

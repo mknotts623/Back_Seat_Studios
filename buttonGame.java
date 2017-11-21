@@ -71,111 +71,125 @@ public class buttonGame extends JFrame {
     }    
 
     public static void moveCard(int a, int c) {
-        int columnToPlace = 0; //Figures out first open space the card could be played.
-        if (a == 3) {
-            columnToPlace = firstOpenSpot(card, a - 1);
-        } else if (a == 0) {
-            columnToPlace = firstOpenSpot(card, a + 1);
-        }
-        
-        System.out.println("First Open Column: " + columnToPlace);
-        if (columnToPlace != -1) { //If there's an open spot, play the card.
-            if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
-                p2Mana = p2Mana - card[a][c].getCost();
-                buttons[1][5].setText("Mana: "+p2Mana);
-                //Card costs mana.  Now move card to spot.
-                card[a - 1][columnToPlace] = card[a][c];
-                System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
-                buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
-                card[a][c] = null;
-                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-            } else if (a == 0 && turn == 1 && p1Mana >= card[a][c].getCost()) {
-                p1Mana = p1Mana - card[a][c].getCost();
-                buttons[1][5].setText("Mana: "+p1Mana);
-                //Card costs mana.  Now move card to spot.
-                card[a + 1][columnToPlace] = card[a][c];
-                System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
-                buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
-                card[a][c] = null;
-                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+        if (card[a][c] != null) {
+            int columnToPlace = 0; //Figures out first open space the card could be played.
+            if (a == 3) {
+                columnToPlace = firstOpenSpot(card, a - 1);
+            } else if (a == 0) {
+                columnToPlace = firstOpenSpot(card, a + 1);
+            }
+            
+            System.out.println("First Open Column: " + columnToPlace);
+            if (columnToPlace != -1) { //If there's an open spot, play the card.
+                if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
+                    p2Mana = p2Mana - card[a][c].getCost();
+                    buttons[1][5].setText("Mana: "+p2Mana);
+                    //Card costs mana.  Now move card to spot.
+                    card[a - 1][columnToPlace] = card[a][c];
+                    System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
+                    buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                    card[a - 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
+                    card[a][c] = null;
+                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                } else if (a == 0 && turn == 1 && p1Mana >= card[a][c].getCost()) {
+                    p1Mana = p1Mana - card[a][c].getCost();
+                    buttons[1][5].setText("Mana: "+p1Mana);
+                    //Card costs mana.  Now move card to spot.
+                    card[a + 1][columnToPlace] = card[a][c];
+                    System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
+                    buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                    card[a + 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
+                    card[a][c] = null;
+                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                }
             }
         }
     }
 
     public static void combat(int a, int c) {
-        if (a == 1 && turn == 1) { //Each row can only attack if it is its owner's turn.
-            if (card[a + 1][c] == null) {
-                System.out.println("nulled");
-                String card1 = card[a][c].toString();
-                System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
-                System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 2!");
-                p2HP = p2HP - card[a][c].getAttack();
-                buttons[3][5].setText(p2HP+"");
-            } else {
-                System.out.println("not nulled");
-                String card1 = card[a][c].toString();
-                String card2 = card[a + 1][c].toString();
-                System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
-                System.out.println(card2 + " has attack/defense " + card[a + 1][c].getAttack() + "/" + card[a + 1][c].getDefense());
-                System.out.println(card1 + " takes " + card[a+1][c].getAttack() + " damage");
-                System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
-                
-                boolean card1dead = false;
-                boolean card2dead = false;
-                if (card[a][c].getAttack() >= card[a + 1][c].getDefense()) {
-                    System.out.println(card2 + " dies");
-                    card2dead = true;
+        if (card[a][c] != null) {
+            System.out.println("yo1");
+            if (a == 1 && turn == 1 && card[a][c].getAlreadyAttacked() == false) { //Each row can only attack if it is its owner's turn.
+                System.out.println("yo2");
+                if (card[a + 1][c] == null) {
+                    System.out.println("nulled");
+                    String card1 = card[a][c].toString();
+                    System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+                    System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 2!");
+                    p2HP = p2HP - card[a][c].getAttack();
+                    buttons[3][5].setText(p2HP+"");
+                } else {
+                    System.out.println("not nulled");
+                    String card1 = card[a][c].toString();
+                    String card2 = card[a + 1][c].toString();
+                    System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+                    System.out.println(card2 + " has attack/defense " + card[a + 1][c].getAttack() + "/" + card[a + 1][c].getDefense());
+                    System.out.println(card1 + " takes " + card[a+1][c].getAttack() + " damage");
+                    System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
+                    
+                    boolean card1dead = false;
+                    boolean card2dead = false;
+                    if (card[a][c].getAttack() >= card[a + 1][c].getDefense()) {
+                        System.out.println(card2 + " dies");
+                        card2dead = true;
+                    }
+                    if (card[a][c].getDefense() <= card[a + 1][c].getAttack()) {
+                        System.out.println(card1 + " dies");
+                        card1dead = true;
+                    }
+                    
+                    //This should make combat matter.
+                    if (card2dead) {
+                        buttons[a+1][c].setIcon(new ImageIcon("NoCard.png"));
+                        card[a+1][c] = null;
+                    }
+                    if (card1dead) {
+                        buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                        card[a][c] = null;
+                    }
                 }
-                if (card[a][c].getDefense() <= card[a + 1][c].getAttack()) {
-                    System.out.println(card1 + " dies");
-                    card1dead = true;
+                if (card[a][c]!=null){
+                    card[a][c].setAlreadyAttacked(true);
                 }
-                
-                //This should make combat matter.
-                if (card2dead) {
-                    buttons[a+1][c].setIcon(new ImageIcon("NoCard.png"));
-                    card[a+1][c] = null;
+            } else if (a == 2 && turn == 2 && card[a][c].getAlreadyAttacked() == false) {
+                if (card[a - 1][c] == null) {
+                    System.out.println("nulled");
+                    String card1 = card[a][c].toString();
+                    System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+                    System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 1!");
+                    p1HP = p1HP - card[a][c].getAttack();
+                    buttons[0][5].setText(p1HP+"");
+                } else {
+                    String card1 = card[a][c].toString();
+                    String card2 = card[a - 1][c].toString();
+                    System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+                    System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
+                    System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
+                    System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
+                    
+                    boolean card1dead = false;
+                    boolean card2dead = false;
+                    if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
+                        System.out.println(card2 + " dies");
+                        card2dead = true;
+                    }
+                    if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
+                        System.out.println(card1 + " dies");
+                        card1dead = true;
+                    }
+                    
+                    //This should make combat matter.
+                    if (card2dead) {
+                        buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
+                        card[a-1][c] = null;
+                    }
+                    if (card1dead) {
+                        buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                        card[a][c] = null;
+                    }
                 }
-                if (card1dead) {
-                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-                    card[a][c] = null;
-                }
-            }
-        } else if (a == 2 && turn == 2) {
-            if (card[a - 1][c] == null) {
-                System.out.println("nulled");
-                String card1 = card[a][c].toString();
-                System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
-                System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 1!");
-                p1HP = p1HP - card[a][c].getAttack();
-                buttons[0][5].setText(p1HP+"");
-            } else {
-                String card1 = card[a][c].toString();
-                String card2 = card[a - 1][c].toString();
-                System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
-                System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
-                System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
-                System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
-            
-                boolean card1dead = false;
-                boolean card2dead = false;
-                if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
-                    System.out.println(card2 + " dies");
-                    card2dead = true;
-                }
-                if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
-                    System.out.println(card1 + " dies");
-                    card1dead = true;
-                }
-            
-                //This should make combat matter.
-                if (card2dead) {
-                    buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
-                    card[a-1][c] = null;
-                }
-                if (card1dead) {
-                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-                    card[a][c] = null;
+                if (card[a][c]!=null){
+                    card[a][c].setAlreadyAttacked(true);
                 }
             }
         }
@@ -197,10 +211,19 @@ public class buttonGame extends JFrame {
     }
     
     public static void switchTurn() { //Toggle the turn variable.
+        int rows = 4;
+        int columns = 6;
         if(turn == 1) {
             turn = 2;
             p2Mana = maxMana;
             buttons[1][5].setText("Mana: "+p2Mana);
+            
+            //Refresh minions' attack.
+            for (int c = 0; c < columns-1; c++) {
+                if (card[2][c] != null) {
+                    card[2][c].setAlreadyAttacked(false);
+                }
+            }
         }else if(turn == 2) {
             turn = 1;
             if (maxMana < 10) {
@@ -208,6 +231,13 @@ public class buttonGame extends JFrame {
             }
             p1Mana = maxMana;
             buttons[1][5].setText("Mana: "+p1Mana);
+            
+            //Refresh minions' attack.
+            for (int c = 0; c < columns-1; c++) {
+                if (card[1][c] != null) {
+                    card[1][c].setAlreadyAttacked(false);
+                }
+            }
         }
         System.out.println("Turn switched!  Player " + turn + "\'s turn!");
     }
