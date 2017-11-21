@@ -13,8 +13,14 @@ public class buttonGame extends JFrame {
     static Card[][] card = new Card[4][6];
     static JButton[][] buttons = new JButton[4][6];
     static JFrame p = new JFrame();
+    
     static int p1HP = 50;
     static int p2HP = 50;
+    static int maxMana = 1;
+    static int p1Mana = 1;
+    static int p2Mana = 1;
+    
+    static int turn = 1; //1 (top) or 2 (bottom) corresponding to that player's turn.
 
     public static void main(String[] args) {
         drawBoard();
@@ -38,6 +44,7 @@ public class buttonGame extends JFrame {
                     
                     JButton b = new JButton("Button" + i + "," + j);
                     b.addActionListener(new ButtonListener());
+                    //System.out.println(i+","+j);
                     if (j != 5) {
                         b.setIcon(img);
                     }
@@ -49,10 +56,12 @@ public class buttonGame extends JFrame {
                     buttons[i][j] = b;
                 }
             }
-            buttons[2][5].setText("End Turn");
+            //Soooo, apparently setting Text makes it stop working for clicking stuff, so to make it a button that works like a button, you can't use set text.
+            //buttons[2][5].setText("End Turn");
+            buttons[2][5].setIcon(new ImageIcon("EndTurn.png"));
             buttons[0][5].setText(p1HP + "");
             buttons[3][5].setText(p2HP + "");
-            buttons[1][5].setText("Game Name Here");
+            buttons[1][5].setText("Mana: " + p1Mana);
         }
 
         catch (Exception e) {
@@ -71,13 +80,19 @@ public class buttonGame extends JFrame {
         
         System.out.println("First Open Column: " + columnToPlace);
         if (columnToPlace != -1) { //If there's an open spot, play the card.
-            if (a == 3) {
+            if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
+                p2Mana = p2Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p2Mana);
+                //Card costs mana.  Now move card to spot.
                 card[a - 1][columnToPlace] = card[a][c];
                 System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
                 buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
                 card[a][c] = null;
                 buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-            } else if (a == 0) {
+            } else if (a == 0 && turn == 1 && p1Mana >= card[a][c].getCost()) {
+                p1Mana = p1Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p1Mana);
+                //Card costs mana.  Now move card to spot.
                 card[a + 1][columnToPlace] = card[a][c];
                 System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
                 buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
@@ -88,7 +103,7 @@ public class buttonGame extends JFrame {
     }
 
     public static void combat(int a, int c) {
-        if (a == 1) {
+        if (a == 1 && turn == 1) { //Each row can only attack if it is its owner's turn.
             if (card[a + 1][c] == null) {
                 System.out.println("nulled");
                 String card1 = card[a][c].toString();
@@ -126,7 +141,7 @@ public class buttonGame extends JFrame {
                     card[a][c] = null;
                 }
             }
-        } else if (a == 2) {
+        } else if (a == 2 && turn == 2) {
             if (card[a - 1][c] == null) {
                 System.out.println("nulled");
                 String card1 = card[a][c].toString();
@@ -180,6 +195,22 @@ public class buttonGame extends JFrame {
         }
         return leftmostSpot;
     }
+    
+    public static void switchTurn() { //Toggle the turn variable.
+        if(turn == 1) {
+            turn = 2;
+            p2Mana = maxMana;
+            buttons[1][5].setText("Mana: "+p2Mana);
+        }else if(turn == 2) {
+            turn = 1;
+            if (maxMana < 10) {
+                maxMana++;
+            }
+            p1Mana = maxMana;
+            buttons[1][5].setText("Mana: "+p1Mana);
+        }
+        System.out.println("Turn switched!  Player " + turn + "\'s turn!");
+    }
 }
 
 class ButtonListener implements ActionListener {
@@ -189,17 +220,22 @@ class ButtonListener implements ActionListener {
         int rows = 4;
         int columns = 6;
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns-1; j++) {
+            for (int j = 0; j < columns; j++) {
                 if (e.getActionCommand().equals("Button"  + i + "," + j)) {
-                    if (i == 3 || i == 0) {
+                    System.out.println("Row: "+i+" Column: " +j);
+                    if ((i == 3 || i == 0) && j != columns-1) {
+                        System.out.println("Click 1");
                         buttonGame.moveCard(i,j);
-                    }
-                    if (i == 2 || i == 1) {
+                    } else if ((i == 2 || i == 1) && j != columns-1) {
+                        System.out.println("Click 2");
                         buttonGame.combat(i,j);
+                    } else if (i == 2 && j == columns - 1) {
+                        System.out.println("Click 3");
+                        buttonGame.switchTurn(); //Clicking the end turn button switches who's turn it is.
                     }
                 }
             }
         }
-    }
+   }
 }
 
