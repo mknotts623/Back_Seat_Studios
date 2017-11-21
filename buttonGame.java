@@ -69,32 +69,62 @@ public class buttonGame extends JFrame {
     }
 
     public static void combat(int a, int c) {
-        String card1 = card[a][c].toString();
-        String card2 = card[a - 1][c].toString();
-        System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
-        System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
-        System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
-        System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
-        
-        boolean card1dead = false;
-        boolean card2dead = false;
-        if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
-            System.out.println(card2 + " dies");
-            card2dead = true;
-        }
-        if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
-            System.out.println(card1 + " dies");
-            card1dead = true;
-        }
-        
-        //This should make combat matter.
-        if (card2dead) {
-            buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
-            card[a-1][c] = null;
-        }
-        if (card1dead) {
-            buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-            card[a][c] = null;
+        if (a == 1) {
+            String card1 = card[a][c].toString();
+            String card2 = card[a + 1][c].toString();
+            System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+            System.out.println(card2 + " has attack/defense " + card[a + 1][c].getAttack() + "/" + card[a + 1][c].getDefense());
+            System.out.println(card1 + " takes " + card[a+1][c].getAttack() + " damage");
+            System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
+            
+            boolean card1dead = false;
+            boolean card2dead = false;
+            if (card[a][c].getAttack() >= card[a + 1][c].getDefense()) {
+                System.out.println(card2 + " dies");
+                card2dead = true;
+            }
+            if (card[a][c].getDefense() <= card[a + 1][c].getAttack()) {
+                System.out.println(card1 + " dies");
+                card1dead = true;
+            }
+            
+            //This should make combat matter.
+            if (card2dead) {
+                buttons[a+1][c].setIcon(new ImageIcon("NoCard.png"));
+                card[a+1][c] = null;
+            }
+            if (card1dead) {
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                card[a][c] = null;
+            }
+        } else if (a == 2) {
+            String card1 = card[a][c].toString();
+            String card2 = card[a - 1][c].toString();
+            System.out.println(card1 + " has attack/defense " + card[a][c].getAttack() + "/" + card[a][c].getDefense());
+            System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
+            System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
+            System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
+            
+            boolean card1dead = false;
+            boolean card2dead = false;
+            if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
+                System.out.println(card2 + " dies");
+                card2dead = true;
+            }
+            if (card[a][c].getDefense() <= card[a - 1][c].getAttack()) {
+                System.out.println(card1 + " dies");
+                card1dead = true;
+            }
+            
+            //This should make combat matter.
+            if (card2dead) {
+                buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
+                card[a-1][c] = null;
+            }
+            if (card1dead) {
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                card[a][c] = null;
+            }
         }
     }
 }
@@ -111,7 +141,7 @@ class ButtonListener implements ActionListener {
                     if (i == 3 || i == 0) {
                         buttonGame.moveCard(i,j);
                     }
-                    if (i == 2) {
+                    if (i == 2 || i == 1) {
                         buttonGame.combat(i,j);
                     }
                 }
