@@ -62,18 +62,28 @@ public class buttonGame extends JFrame {
     }    
 
     public static void moveCard(int a, int c) {
+        int columnToPlace = 0; //Figures out first open space the card could be played.
         if (a == 3) {
-            card[a - 1][c] = card[a][c];
-            System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + c);
-            buttons[a-1][c].setIcon(new ImageIcon(card[a][c].getCardImage()));
-            card[a][c] = null;
-            buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+            columnToPlace = firstOpenSpot(card, a - 1);
         } else if (a == 0) {
-            card[a + 1][c] = card[a][c];
-            System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + c);
-            buttons[a+1][c].setIcon(new ImageIcon(card[a][c].getCardImage()));
-            card[a][c] = null;
-            buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+            columnToPlace = firstOpenSpot(card, a + 1);
+        }
+        
+        System.out.println("First Open Column: " + columnToPlace);
+        if (columnToPlace != -1) { //If there's an open spot, play the card.
+            if (a == 3) {
+                card[a - 1][columnToPlace] = card[a][c];
+                System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
+                buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+            } else if (a == 0) {
+                card[a + 1][columnToPlace] = card[a][c];
+                System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
+                buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+            }
         }
     }
 
@@ -154,6 +164,21 @@ public class buttonGame extends JFrame {
                 }
             }
         }
+    }
+    
+    public static int firstOpenSpot(Card[][] card, int row) { //Pass in the array of cards and which row you want to access, and get the first open column.
+        int columns = 6;
+        int leftmostSpot = -1;
+        int c = 0;
+        boolean found = false;
+        while(found == false && c < columns-1) {
+            if (card[row][c] == null) {
+                leftmostSpot = c;
+                found = true;
+            }
+            c++;
+        }
+        return leftmostSpot;
     }
 }
 
