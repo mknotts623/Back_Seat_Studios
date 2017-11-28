@@ -19,6 +19,7 @@ public class buttonGame extends JFrame {
     static int maxMana = 1;
     static int p1Mana = 1;
     static int p2Mana = 1;
+    static int turnNumber = 1;
 
     static int turn = 1; //1 (top) or 2 (bottom) corresponding to that player's turn.
 
@@ -117,6 +118,10 @@ public class buttonGame extends JFrame {
                     System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 2!");
                     p2HP = p2HP - card[a][c].getAttack();
                     buttons[3][5].setText(p2HP+"");
+                    if (p2HP <= 0) {
+                        turn = 99;
+                        buttons[1][5].setText("Player 1 wins!");
+                    }
                 } else {
                     System.out.println("not nulled");
                     String card1 = card[a][c].toString();
@@ -158,6 +163,10 @@ public class buttonGame extends JFrame {
                     System.out.println(card1 + " deals " + card[a][c].getAttack() + " damage player 1!");
                     p1HP = p1HP - card[a][c].getAttack();
                     buttons[0][5].setText(p1HP+"");
+                    if (p1HP <= 0) {
+                        turn = 99;
+                        buttons[1][5].setText("Player 2 wins!");
+                    }
                 } else {
                     String card1 = card[a][c].toString();
                     String card2 = card[a - 1][c].toString();
@@ -243,6 +252,8 @@ public class buttonGame extends JFrame {
                     card[2][c].setAlreadyAttacked(false);
                 }
             }
+            
+            turnNumber++;
         }else if(turn == 2) {
             drawCard();
             turn = 1;
@@ -260,6 +271,16 @@ public class buttonGame extends JFrame {
             }
         }
         System.out.println("Turn switched!  Player " + turn + "\'s turn!");
+        if (turnNumber > 31) {
+            turn = 99;
+            if(p1HP > p2HP) {
+                buttons[1][5].setText("Player 1 wins!");
+            } else if(p1HP < p2HP) {
+                buttons[1][5].setText("Player 2 wins!");
+            } else {
+                buttons[1][5].setText("It\'s a draw!");
+            }
+        }
     }
 }
 
