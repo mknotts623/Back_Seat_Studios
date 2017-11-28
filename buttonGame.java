@@ -13,13 +13,13 @@ public class buttonGame extends JFrame {
     static Card[][] card = new Card[4][6];
     static JButton[][] buttons = new JButton[4][6];
     static JFrame p = new JFrame();
-    
+
     static int p1HP = 50;
     static int p2HP = 50;
     static int maxMana = 1;
     static int p1Mana = 1;
     static int p2Mana = 1;
-    
+
     static int turn = 1; //1 (top) or 2 (bottom) corresponding to that player's turn.
 
     public static void main(String[] args) {
@@ -33,24 +33,23 @@ public class buttonGame extends JFrame {
         try {
             for (int i = 0; i < rows; i++) { 
                 for (int j = 0; j < columns; j++) {
-                    int rand = (int) (Math.random() * 3);
+                    int rand = (int) (Math.random() * 6);
                     card[i][j] = CardDatabase.CardDatabase(rand);
-                    
                 }
             }
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {                    
                     ImageIcon img = new ImageIcon(card[i][j].getCardImage());
-                    
+
                     JButton b = new JButton("Button" + i + "," + j);
                     b.addActionListener(new ButtonListener());
                     //System.out.println(i+","+j);
                     if (j != 5) {
                         b.setIcon(img);
                     }
-                    
+
                     /*else if (i == 1 && j == 1) {
-                        b.setIcon(img);
+                    b.setIcon(img);
                     }*/
                     p.add(b);
                     buttons[i][j] = b;
@@ -78,7 +77,7 @@ public class buttonGame extends JFrame {
             } else if (a == 0) {
                 columnToPlace = firstOpenSpot(card, a + 1);
             }
-            
+
             System.out.println("First Open Column: " + columnToPlace);
             if (columnToPlace != -1) { //If there's an open spot, play the card.
                 if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
@@ -126,7 +125,7 @@ public class buttonGame extends JFrame {
                     System.out.println(card2 + " has attack/defense " + card[a + 1][c].getAttack() + "/" + card[a + 1][c].getDefense());
                     System.out.println(card1 + " takes " + card[a+1][c].getAttack() + " damage");
                     System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
-                    
+
                     boolean card1dead = false;
                     boolean card2dead = false;
                     if (card[a][c].getAttack() >= card[a + 1][c].getDefense()) {
@@ -137,7 +136,7 @@ public class buttonGame extends JFrame {
                         System.out.println(card1 + " dies");
                         card1dead = true;
                     }
-                    
+
                     //This should make combat matter.
                     if (card2dead) {
                         buttons[a+1][c].setIcon(new ImageIcon("NoCard.png"));
@@ -166,7 +165,7 @@ public class buttonGame extends JFrame {
                     System.out.println(card2 + " has attack/defense " + card[a - 1][c].getAttack() + "/" + card[a - 1][c].getDefense());
                     System.out.println(card1 + " takes " + card[a-1][c].getAttack() + " damage");
                     System.out.println(card2 + " takes " + card[a][c].getAttack() + " damage");
-                    
+
                     boolean card1dead = false;
                     boolean card2dead = false;
                     if (card[a][c].getAttack() >= card[a - 1][c].getDefense()) {
@@ -177,7 +176,7 @@ public class buttonGame extends JFrame {
                         System.out.println(card1 + " dies");
                         card1dead = true;
                     }
-                    
+
                     //This should make combat matter.
                     if (card2dead) {
                         buttons[a-1][c].setIcon(new ImageIcon("NoCard.png"));
@@ -194,7 +193,7 @@ public class buttonGame extends JFrame {
             }
         }
     }
-    
+
     public static int firstOpenSpot(Card[][] card, int row) { //Pass in the array of cards and which row you want to access, and get the first open column.
         int columns = 6;
         int leftmostSpot = -1;
@@ -209,15 +208,35 @@ public class buttonGame extends JFrame {
         }
         return leftmostSpot;
     }
-    
+
+    public static void drawCard() {
+        int rand = (int) Math.random() * 6;
+        if(turn == 1) {
+            if (firstOpenSpot(card, 0) != -1) {
+                int openCol = firstOpenSpot(card, 0);
+                card[0][openCol] = CardDatabase.CardDatabase(rand);
+                buttons[0][openCol].setIcon(new ImageIcon(card[0][openCol].getCardImage()));
+                System.out.println("Card Drawn");
+            }
+        }
+        else if (turn == 2) {
+            if(firstOpenSpot(card, 3) != -1) {
+                int openCol = firstOpenSpot(card, 3);
+                card[3][openCol] = CardDatabase.CardDatabase(rand);
+                buttons[3][openCol].setIcon(new ImageIcon(card[3][openCol].getCardImage()));
+            }
+        }
+    }
+
     public static void switchTurn() { //Toggle the turn variable.
         int rows = 4;
         int columns = 6;
         if(turn == 1) {
+            drawCard();
             turn = 2;
             p2Mana = maxMana;
             buttons[1][5].setText("Mana: "+p2Mana);
-            
+
             //Refresh minions' attack.
             for (int c = 0; c < columns-1; c++) {
                 if (card[2][c] != null) {
@@ -225,13 +244,14 @@ public class buttonGame extends JFrame {
                 }
             }
         }else if(turn == 2) {
+            drawCard();
             turn = 1;
             if (maxMana < 10) {
                 maxMana++;
             }
             p1Mana = maxMana;
             buttons[1][5].setText("Mana: "+p1Mana);
-            
+
             //Refresh minions' attack.
             for (int c = 0; c < columns-1; c++) {
                 if (card[1][c] != null) {
@@ -266,6 +286,5 @@ class ButtonListener implements ActionListener {
                 }
             }
         }
-   }
+    }
 }
-
