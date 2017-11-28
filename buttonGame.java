@@ -34,26 +34,31 @@ public class buttonGame extends JFrame {
         try {
             for (int i = 0; i < rows; i++) { 
                 for (int j = 0; j < columns; j++) {
-                    int rand = (int) (Math.random() * 6);
-                    card[i][j] = CardDatabase.CardDatabase(rand);
+                    if ((i != 1 && i != 2) && (j < 3)) {
+                        int rand = (int) (Math.random() * 6);
+                        card[i][j] = CardDatabase.CardDatabase(rand);
+                    }
                 }
             }
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {                    
-                    ImageIcon img = new ImageIcon(card[i][j].getCardImage());
-
+                    
                     JButton b = new JButton("Button" + i + "," + j);
                     b.addActionListener(new ButtonListener());
                     //System.out.println(i+","+j);
-                    if (j != 5) {
-                        b.setIcon(img);
+                    if ((i != 1 && i != 2) && (j < 3)) {
+                        if (j != 5) {
+                            ImageIcon img = new ImageIcon((card[i][j].getCardImage()));
+                            b.setIcon(img);
+                        }
                     }
-
+                        
                     /*else if (i == 1 && j == 1) {
-                    b.setIcon(img);
+                    /*    b.setIcon(img);
                     }*/
                     p.add(b);
                     buttons[i][j] = b;
+                    
                 }
             }
             //Soooo, apparently setting Text makes it stop working for clicking stuff, so to make it a button that works like a button, you can't use set text.
@@ -219,7 +224,8 @@ public class buttonGame extends JFrame {
     }
 
     public static void drawCard() {
-        int rand = (int) Math.random() * 6;
+        int rand = (int) (Math.random() * 6);
+        System.out.println("!!!!!!!!" + rand + "!!!!!!!!!");
         if(turn == 1) {
             if (firstOpenSpot(card, 0) != -1) {
                 int openCol = firstOpenSpot(card, 0);
