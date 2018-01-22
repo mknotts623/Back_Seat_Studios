@@ -35,7 +35,7 @@ public class buttonGame extends JFrame {
             for (int i = 0; i < rows; i++) { 
                 for (int j = 0; j < columns; j++) {
                     if ((i != 1 && i != 2) && ((i == 0 && j < 3) || (i == 3 && j < 4))) {
-                        int rand = (int) (Math.random() * 6);
+                        int rand = (int) (Math.random() * 16);
                         card[i][j] = CardDatabase.CardDatabase(rand);
                     }
                 }
@@ -229,7 +229,7 @@ public class buttonGame extends JFrame {
     }
 
     public static void drawCard() {
-        int rand = (int) (Math.random() * 6);
+        int rand = (int) (Math.random() * 16);
         System.out.println("!!!!!!!!" + rand + "!!!!!!!!!");
         if(turn == 1) {
             if (firstOpenSpot(card, 0) != -1) {
