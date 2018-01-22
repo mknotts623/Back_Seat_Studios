@@ -16,7 +16,7 @@ public class CardDatabase
         database[1] = new Card("Incompetent Rioter", 2, 5, 1, 1, "IncompetentRioter.png"); 
         database[2] = new Card("Slime", 3, 1, 5, 1, "Slime.png");
         database[3] = new Card("Default Hero", 4, 5, 5, 2,"Default Hero.png");
-        database[4] = new Card("Fledgling Vampire", 6, 7, 3, 2, "Fledgling Vampire.png");
+        database[4] = new Card("Fledgling Vampire", 6, 7, 3, 2, "Fledgeling Vampire.png");
         database[5] = new Card("Awarewolf", 7, 3, 7, 2,"Awarewolf.png");
         database[6] = new Card("Hunter Apprentice", 8, 7, 7, 3,"Hunter\'s Apprentice.png"); 
         database[7] = new Card("Hot Vampire", 9, 9, 5, 3, "Hot Vampire.png");
