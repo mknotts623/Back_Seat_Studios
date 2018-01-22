@@ -35,14 +35,14 @@ public class buttonGame extends JFrame {
             for (int i = 0; i < rows; i++) { 
                 for (int j = 0; j < columns; j++) {
                     if ((i != 1 && i != 2) && ((i == 0 && j < 3) || (i == 3 && j < 4))) {
-                        int rand = (int) (Math.random() * 16);
+                        int rand = (int) (Math.random() * 18);
                         card[i][j] = CardDatabase.CardDatabase(rand);
                     }
                 }
             }
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {                    
-                    
+
                     JButton b = new JButton("Button" + i + "," + j);
                     b.addActionListener(new ButtonListener());
                     //System.out.println(i+","+j);
@@ -57,13 +57,13 @@ public class buttonGame extends JFrame {
                             b.setIcon(img);
                         }
                     }
-                        
+
                     /*else if (i == 1 && j == 1) {
                     /*    b.setIcon(img);
                     }*/
                     p.add(b);
                     buttons[i][j] = b;
-                    
+
                 }
             }
             //Soooo, apparently setting Text makes it stop working for clicking stuff, so to make it a button that works like a button, you can't use set text.
@@ -81,39 +81,90 @@ public class buttonGame extends JFrame {
     }    
 
     public static void moveCard(int a, int c) {
-        if (card[a][c] != null) {
-            int columnToPlace = 0; //Figures out first open space the card could be played.
-            if (a == 3) {
-                columnToPlace = firstOpenSpot(card, a - 1);
-            } else if (a == 0) {
-                columnToPlace = firstOpenSpot(card, a + 1);
-            }
+        if (card[a][c].isPermanent() == true) {
+            if (card[a][c] != null) {
+                int columnToPlace = 0; //Figures out first open space the card could be played.
+                if (a == 3) {
+                    columnToPlace = firstOpenSpot(card, a - 1);
+                } else if (a == 0) {
+                    columnToPlace = firstOpenSpot(card, a + 1);
+                }
 
-            System.out.println("First Open Column: " + columnToPlace);
-            if (columnToPlace != -1) { //If there's an open spot, play the card.
-                if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
-                    p2Mana = p2Mana - card[a][c].getCost();
-                    buttons[1][5].setText("Mana: "+p2Mana);
-                    //Card costs mana.  Now move card to spot.
-                    card[a - 1][columnToPlace] = card[a][c];
-                    System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
-                    buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
-                    card[a - 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
-                    card[a][c] = null;
-                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
-                } else if (a == 0 && turn == 1 && p1Mana >= card[a][c].getCost()) {
-                    p1Mana = p1Mana - card[a][c].getCost();
-                    buttons[1][5].setText("Mana: "+p1Mana);
-                    //Card costs mana.  Now move card to spot.
-                    card[a + 1][columnToPlace] = card[a][c];
-                    System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
-                    buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
-                    card[a + 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
-                    card[a][c] = null;
-                    buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                System.out.println("First Open Column: " + columnToPlace);
+                if (columnToPlace != -1) { //If there's an open spot, play the card.
+                    if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//You can only play your cards if it's your turn.
+                        p2Mana = p2Mana - card[a][c].getCost();
+                        buttons[1][5].setText("Mana: "+p2Mana);
+                        //Card costs mana.  Now move card to spot.
+                        card[a - 1][columnToPlace] = card[a][c];
+                        System.out.println(card[a][c] + " has been moved to " + (a - 1) + "," + columnToPlace);
+                        buttons[a - 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                        card[a - 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
+                        card[a][c] = null;
+                        buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                    } else if (a == 0 && turn == 1 && p1Mana >= card[a][c].getCost()) {
+                        p1Mana = p1Mana - card[a][c].getCost();
+                        buttons[1][5].setText("Mana: "+p1Mana);
+                        //Card costs mana.  Now move card to spot.
+                        card[a + 1][columnToPlace] = card[a][c];
+                        System.out.println(card[a][c] + " has been moved to " + (a + 1) + "," + columnToPlace);
+                        buttons[a + 1][columnToPlace].setIcon(new ImageIcon(card[a][c].getCardImage()));
+                        card[a + 1][columnToPlace].setAlreadyAttacked(true);//Summoning Sickness
+                        card[a][c] = null;
+                        buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                    }
                 }
             }
         }
+        else {
+            castSpell(a,c);
+        }
+    }
+    public static void castSpell(int a, int c) {
+        if (card[a][c].toString().equals("Rest In P3ace")) {
+            if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {//makes sure caster has enough mana
+                p2Mana = p2Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p2Mana);
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                for (int i = 1; i < 3; i++) {
+                    for(int j = 0; j < columns - 1; j++) {
+                        card[i][j] = null;
+                        buttons[i][j].setIcon(new ImageIcon("NoCard.png"));
+                    }
+                }
+            }
+            else if (a == 1 && turn == 1 && p1Mana >= card[a][c].getCost()) {//makes sure caster has enough mana
+                p1Mana = p1Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p1Mana);
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                for (int i = 1; i < 3; i++) {
+                    for(int j = 0; j < columns - 1; j++) {
+                        card[i][j] = null;
+                        buttons[i][j].setIcon(new ImageIcon("NoCard.png"));
+                    }
+                }
+            }
+        }
+        else if (card[a][c].toString().equals("Junior Research")) {
+            if (a == 3 && turn == 2 && p2Mana >= card[a][c].getCost()) {
+                p2Mana = p2Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p2Mana);
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                drawCard();
+                drawCard();
+            }
+            if (a == 1 && turn == 1 && p1Mana >= card[a][c].getCost()) {
+                p1Mana = p1Mana - card[a][c].getCost();
+                buttons[1][5].setText("Mana: "+p1Mana);
+                card[a][c] = null;
+                buttons[a][c].setIcon(new ImageIcon("NoCard.png"));
+                drawCard();
+                drawCard();
+            }
+       }
     }
 
     public static void combat(int a, int c) {
@@ -263,7 +314,7 @@ public class buttonGame extends JFrame {
                     card[2][c].setAlreadyAttacked(false);
                 }
             }
-            
+
             turnNumber++;
         }else if(turn == 2) {
             drawCard();
@@ -297,7 +348,6 @@ public class buttonGame extends JFrame {
 
 class ButtonListener implements ActionListener {
     ButtonListener() {}
-
     public void actionPerformed(ActionEvent e) {
         int rows = 4;
         int columns = 6;

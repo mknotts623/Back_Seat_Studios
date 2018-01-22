@@ -17,6 +17,7 @@ public class Card
     private int cost;
     private String cardImage;
     private boolean alreadyAttacked;
+    private boolean isPermanent;
     
     /**
      * Constructor for objects of class Card
@@ -27,7 +28,7 @@ public class Card
      * @param cardImage Name of the image file for the card art
      * @param alreadyAttacked Whether or not this card has attacked yet.
      */
-    public Card(String cardName, int index, int attack, int defense, int cost, String cardImage) {
+    public Card(String cardName, int index, int attack, int defense, int cost, String cardImage, boolean isPermanent) {
         this.cardName = cardName;
         this.index = index;
         this.attack = attack;
@@ -35,6 +36,7 @@ public class Card
         this.cost = cost;
         this.cardImage = cardImage;
         this.alreadyAttacked = false;
+        this.isPermanent = isPermanent;
     }
     
     /**
@@ -106,5 +108,12 @@ public class Card
      */
     public void setAlreadyAttacked(boolean state) {
         alreadyAttacked = state;
+    }
+    /**
+     * Getter for isPermanent
+     * @return whether or not a card is a permanent
+     */
+    public boolean isPermanent() {
+        return isPermanent;
     }
 }
